@@ -1,122 +1,612 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AgriTrace - Transparent Farm Supply Chain</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com "></script>
-  <!-- Solana Web3.js + Wallet Adapter -->
-  <script src="https://unpkg.com/ @solana/web3.js@latest/lib/index.iife.js"></script>
-  <script src="https://unpkg.com/ @solana/wallet-adapter-wallets@0.1.3/umd/index.iife.js"></script>
-  <script src="https://unpkg.com/ @solana/wallet-adapter-base@0.9.24/umd/index.iife.js"></script>
-  <script src="https://unpkg.com/ @solana/wallet-adapter-react@0.15.4/umd/index.iife.js"></script>
-  <script src="https://unpkg.com/ @solana/wallet-adapter-react-ui@0.15.8/umd/index.iife.js"></script>
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #f9fafb;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solana LocaleFi: Empowering Communities on Solana</title>
+    <meta name="description" content="Decentralized, transparent group savings and micro-lending for Indian communities, powered by Solana's high-speed blockchain.">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Solana Theme Colors */
+        :root {
+            --solana-purple: #9945FF;
+            --solana-blue: #14F195; /* Accent green-blue */
+            --solana-dark-bg: #000000;
+            --solana-light-bg: #0A0A0A;
+            --solana-text-light: #F0F0F0;
+            --solana-text-dark: #A0A0A0;
+            --solana-gradient-dark: linear-gradient(135deg, #0A0A0A 0%, #000000 100%);
+            --solana-gradient-hero: linear-gradient(45deg, #0A0A0A 0%, #17002B 100%); /* Darker, more purple gradient */
+        }
+
+        /* General Styling */
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--solana-dark-bg);
+            color: var(--solana-text-light);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            overflow-x: hidden; /* Prevent horizontal scroll from animations */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- Header --- */
+        header {
+            background-color: rgba(0, 0, 0, 0.8); /* Slightly transparent for modern feel */
+            padding: 15px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(8px); /* Frosted glass effect */
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--solana-purple);
+            text-decoration: none;
+            text-shadow: 0 0 8px rgba(153, 69, 255, 0.5);
+        }
+
+        .nav-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--solana-text-light);
+            font-weight: 600;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--solana-blue);
+            text-shadow: 0 0 10px rgba(20, 241, 149, 0.7);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            background: var(--solana-gradient-hero);
+            color: var(--solana-text-light);
+            text-align: center;
+            padding: 100px 20px;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden; /* For any potential background animation */
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-shadow: 0 0 15px rgba(153, 69, 255, 0.8);
+            z-index: 1; /* Ensure text is above any background effects */
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            max-width: 800px;
+            margin-bottom: 40px;
+            color: var(--solana-text-dark);
+            z-index: 1;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, var(--solana-purple) 0%, var(--solana-blue) 100%);
+            color: var(--solana-dark-bg);
+            padding: 18px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.15em;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 25px rgba(153, 69, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: skewX(-30deg);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(153, 69, 255, 0.6);
+        }
+
+        /* Placeholder for 3D animation */
+        .hero-animation-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 75% 15%, rgba(153, 69, 255, 0.2) 0%, transparent 40%),
+                        radial-gradient(circle at 25% 85%, rgba(20, 241, 149, 0.15) 0%, transparent 40%);
+            /* In a real scenario, this would be a <canvas> element rendering 3D graphics */
+            pointer-events: none; /* Allows clicks on elements below */
+            opacity: 0.7; /* Subtler effect */
+        }
+
+        /* --- Section Styling --- */
+        section {
+            padding: 80px 20px;
+            text-align: center;
+            background-color: var(--solana-dark-bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        section:nth-of-type(even) {
+            background-color: var(--solana-light-bg);
+        }
+
+        h2 {
+            font-size: 3em;
+            color: var(--solana-purple);
+            margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
+            text-shadow: 0 0 10px rgba(153, 69, 255, 0.5);
+        }
+
+        h2::after {
+            content: '';
+            width: 80px;
+            height: 5px;
+            background: var(--solana-blue);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -15px;
+            border-radius: 2.5px;
+            box-shadow: 0 0 10px rgba(20, 241, 149, 0.7);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .grid-item {
+            background-color: rgba(20, 241, 149, 0.05); /* Very subtle background */
+            border: 1px solid rgba(153, 69, 255, 0.2);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            text-align: center;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grid-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 10% 10%, rgba(153, 69, 255, 0.1) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .grid-item:hover::before {
+            opacity: 1;
+        }
+
+        .grid-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(153, 69, 255, 0.3), 0 0 20px rgba(20, 241, 149, 0.2);
+        }
+
+        .grid-item .icon {
+            font-size: 3.5em;
+            color: var(--solana-blue);
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(20, 241, 149, 0.7);
+        }
+
+        .grid-item h3 {
+            font-size: 1.6em;
+            color: var(--solana-purple);
+            margin-bottom: 20px;
+        }
+
+        .grid-item p {
+            font-size: 1.05em;
+            color: var(--solana-text-dark);
+        }
+
+        /* --- Call to Action Section --- */
+        .cta-section {
+            background: var(--solana-gradient-hero); /* Reusing hero gradient */
+            color: var(--solana-text-light);
+            padding: 80px 20px;
+            text-align: center;
+            box-shadow: inset 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        .cta-section h2 {
+            color: var(--solana-text-light);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+        .cta-section h2::after {
+            background: var(--solana-blue); /* White underline */
+            box-shadow: 0 0 10px rgba(20, 241, 149, 0.7);
+        }
+
+        .cta-section p {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            color: var(--solana-text-dark);
+        }
+
+        .newsletter-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .newsletter-form input[type="email"] {
+            padding: 18px 25px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50px;
+            width: 100%;
+            max-width: 450px;
+            font-size: 1.1em;
+            color: var(--solana-text-light);
+            outline: none;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        .newsletter-form input[type="email"]::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .newsletter-form input[type="email"]:focus {
+            border-color: var(--solana-blue);
+            background-color: rgba(255,255,255,0.15);
+            box-shadow: 0 0 15px rgba(20, 241, 149, 0.5);
+        }
+
+        .newsletter-form button {
+            background: linear-gradient(45deg, var(--solana-blue) 0%, var(--solana-purple) 100%);
+            color: var(--solana-dark-bg);
+            padding: 18px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 25px rgba(20, 241, 149, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .newsletter-form button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: skewX(-30deg);
+            transition: 0.5s;
+        }
+
+        .newsletter-form button:hover::before {
+            left: 100%;
+        }
+
+        .newsletter-form button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(20, 241, 149, 0.6);
+        }
+
+        #notification-message {
+            margin-top: 25px;
+            color: var(--solana-blue);
+            font-weight: 600;
+            font-size: 1.2em;
+            text-shadow: 0 0 10px rgba(20, 241, 149, 0.5);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--solana-light-bg);
+            color: var(--solana-text-dark);
+            padding: 50px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            border-top: 1px solid rgba(153, 69, 255, 0.1);
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 25px 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--solana-text-dark);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--solana-blue);
+            text-shadow: 0 0 5px rgba(20, 241, 149, 0.7);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; /* Hide for mobile for simplicity, could add hamburger menu */
+            }
+
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .hero p {
+                font-size: 1.1em;
+            }
+
+            h2 {
+                font-size: 2em;
+            }
+
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form input[type="email"],
+            .newsletter-form button {
+                max-width: none;
+                width: calc(100% - 40px); /* Account for padding */
+            }
+        }
+    </style>
 </head>
-<body class="bg-white text-gray-800">
-
-  <!-- Navbar -->
-  <nav class="bg-green-700 text-white p-4 shadow-md">
-    <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-xl font-bold">AgriTrace</h1>
-      <button id="connectWalletBtn" class="bg-white text-green-700 px-4 py-2 rounded hover:bg-green-100 transition">Connect Wallet</button>
-    </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <section class="container mx-auto py-16 text-center">
-    <h2 class="text-3xl font-bold mb-4">Transparent Farm-to-Fork Tracking on Solana</h2>
-    <p class="mb-6">Empowering Indian farmers with blockchain traceability.</p>
-    <button id="joinWaitlistBtn" class="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-500 disabled:opacity-50 transition" disabled>
-      Join Waitlist
-    </button>
-  </section>
-
-  <!-- Demo Section -->
-  <section class="bg-gray-100 py-10">
-    <div class="container mx-auto text-center">
-      <h3 class="text-2xl font-semibold mb-4">How It Works</h3>
-      <p class="mb-6">Farmers mint NFTs representing real-world produce. Consumers scan QR codes to verify origin on the blockchain.</p>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded shadow">
-          <h4 class="font-bold text-lg mb-2">Step 1: Mint Batch</h4>
-          <p>Farmers create an NFT for each batch of produce.</p>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">LocaleFi</a>
+                <ul class="nav-links">
+                    <li><a href="#how-it-works">How it Works</a></li>
+                    <li><a href="#benefits">Why LocaleFi?</a></li>
+                    <li><a href="#use-cases">Who Benefits?</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
         </div>
-        <div class="bg-white p-6 rounded shadow">
-          <h4 class="font-bold text-lg mb-2">Step 2: Track Journey</h4>
-          <p>Data like harvest date, location, and quality is stored on-chain.</p>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-animation-placeholder">
+                </div>
+            <div class="container">
+                <h1>Build Financial Trust, Together.<br>Empower Your Community with LocaleFi.</h1>
+                <p>Simple, secure, and transparent group savings and micro-loans, powered by Solana's lightning-fast blockchain – tailored for vibrant Indian communities.</p>
+                <a href="#" class="btn" onclick="alert('The LocaleFi app is under active development. Stay tuned for launch details!'); return false;">Download the App (Coming Soon)</a>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="container">
+            <h2>How LocaleFi Works: Simple, Transparent, Secure</h2>
+            <div class="grid-container">
+                <div class="grid-item">
+                    <div class="icon">&#129299;</div> <h3>1. Form Your Digital Circle</h3>
+                    <p>Gather your trusted community – friends, family, or business associates – to create a transparent savings group on Solana.</p>
+                </div>
+                <div class="grid-item">
+                    <div class="icon">&#128241;</div> <h3>2. Contribute Effortlessly</h3>
+                    <p>Members make regular, agreed-upon contributions directly from their mobile, with transactions secured by the blockchain.</p>
+                </div>
+                <div class="grid-item">
+                    <div class="icon">&#128176;</div> <h3>3. Receive Instant Payouts</h3>
+                    <p>When it's your turn, the full Circle amount is securely disbursed to your wallet, instantly, with negligible fees.</p>
+                </div>
+                <div class="grid-item">
+                    <div class="icon">&#128204;</div> <h3>4. Build On-Chain Trust</h3>
+                    <p>Every interaction contributes to your verifiable, decentralized reputation, fostering strong, trustworthy community ties.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="benefits" class="container">
+            <h2>Why Choose LocaleFi?</h2>
+            <div class="grid-container">
+                <div class="grid-item">
+                    <div class="icon">&#128065;</div> <h3>Complete Transparency</h3>
+                    <p>All financial flows within your Circle are immutably recorded on the Solana blockchain, ensuring full visibility for everyone.</p>
+                </div>
+                <div class="grid-item">
+                    <div class="icon">&#128274;</div> <h3>Next-Gen Security</h3>
+                    <p>Your funds and agreements are protected by advanced cryptographic principles, eliminating central points of failure.</p>
+                </div>
+                <div class="grid-item">
+                    <div class="icon">&#9889;</div> <h3>Blazing Fast & Ultra-Low Cost</h3>
+                    <p>Experience near-instant transactions and minimal fees, making frequent micro-finance operations highly practical and affordable.</p>
+                </div>
+                <div class="grid-item">
+                    <div class="icon">&#128100;</div> <h3>Intuitive Accessibility</h3>
+                    <p>Designed for simplicity, LocaleFi allows anyone to manage their savings and lending with an easy-to-use mobile interface.</p>
+                </div>
+                <div class="grid-item">
+                    <div class="icon">&#127891;</div> <h3>Verifiable Reputation</h3>
+                    <p>Your consistent participation builds a powerful, on-chain reputation that opens doors to new financial opportunities within LocaleFi.</p>
+                </div>
+                <div class="grid-item">
+                    <div class="icon">&#128106;</div> <h3>Community Empowerment</h3>
+                    <p>Foster financial self-sufficiency and economic growth directly within your local community, promoting inclusion.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="use-cases" class="container">
+            <h2>Who Can Benefit from LocaleFi?</h2>
+            <div class="grid-container">
+                <div class="grid-item">
+                    <div class="icon">&#128100;</div>
+                    <h3>Families & Individuals</h3>
+                    <p>Achieve personal financial goals, save for important life events, or manage household expenses collectively.</p>
+                </div>
+                <div class="grid-item">
+                    <div class="icon">&#128172;</div>
+                    <h3>Micro-Entrepreneurs</h3>
+                    <p>Access small working capital, manage daily cash flows, or save for business expansion without traditional banking hurdles.</p>
+                </div>
+                <div class="grid-item">
+                    <div class="icon">&#127760;</div>
+                    <h3>Local Community Groups</h3>
+                    <p>Fund collective projects, establish mutual aid funds, or organize social initiatives with transparent financial backing.</p>
+                </div>
+                <div class="grid-item">
+                    <div class="icon">&#127807;</div>
+                    <h3>Farmers & Gig Workers</h3>
+                    <p>Create predictable savings cycles and gain access to crucial micro-loans to stabilize income and invest in their livelihoods.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="cta-section">
+            <div class="container">
+                <h2>Ready to Transform Your Community's Finances?</h2>
+                <p>Be the first to know when the LocaleFi app launches! Join our newsletter for cutting-edge updates.</p>
+                <form class="newsletter-form" id="newsletterForm">
+                    <input type="email" id="emailInput" placeholder="Your Email Address" required>
+                    <button type="submit">Get Notified!</button>
+                </form>
+                <div id="notification-message"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <ul class="footer-links">
+                <li><a href="#how-it-works">How it Works</a></li>
+                <li><a href="#benefits">Why LocaleFi?</a></li>
+                <li><a href="#use-cases">Who Benefits?</a></li>
+                <li><a href="mailto:hello@locale-fi.org">Contact Us</a></li>
+            </ul>
+            <p>&copy; 2025 Solana LocaleFi. All rights reserved.</p>
+            <p>Built with &#10084;&#65039; for Indian Communities, Powered by Solana.</p>
         </div>
-        <div class="bg-white p-6 rounded shadow">
-          <h4 class="font-bold text-lg mb-2">Step 3: Verify Product</h4>
-          <p>Consumers scan a QR code to see full history in real time.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    </footer>
 
-  <!-- Footer -->
-  <footer class="text-center py-6 mt-10 text-sm text-gray-500">
-    © 2025 AgriTrace |
-  </footer>
+    <script>
+        // Simple JavaScript for the newsletter form (front-end only)
+        document.getElementById('newsletterForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            const emailInput = document.getElementById('emailInput');
+            const notificationMessage = document.getElementById('notification-message');
 
-  <!-- Inline Script -->
-  <script>
-    const { Connection, PublicKey, clusterApiUrl } = solanaWeb3;
+            if (emailInput.value && emailInput.checkValidity()) {
+                // In a real application, you'd send this email to a backend service.
+                // For this prototype, we just display a success message.
+                notificationMessage.textContent = `Thank you for your interest, ${emailInput.value}! We'll keep you updated.`;
+                emailInput.value = ''; // Clear the input
+                // emailInput.disabled = true; // Could disable input after submission if desired
+                // this.querySelector('button').disabled = true; // Could disable button
+            } else {
+                notificationMessage.textContent = 'Please enter a valid email address.';
+                notificationMessage.style.color = 'red'; // Indicate error
+            }
+        });
 
-    // Replace with your actual program ID or dummy account
-    const PROGRAM_ID = new PublicKey("YOUR_PROGRAM_ID_HERE");
-    const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
 
-    let walletAddress = null;
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
 
-    // Connect wallet
-    document.getElementById("connectWalletBtn").addEventListener("click", async () => {
-      if (!window.solana) {
-        alert("Please install Phantom wallet.");
-        return;
-      }
+        // Optional: Simple scroll reveal effect for sections (CSS only transitions)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                } else {
+                    entry.target.classList.remove('visible');
+                }
+            });
+        }, { threshold: 0.1 }); // Trigger when 10% of element is visible
 
-      try {
-        const response = await window.solana.connect();
-        walletAddress = response.publicKey.toString();
-        document.getElementById("connectWalletBtn").innerText = "Connected";
-        document.getElementById("joinWaitlistBtn").disabled = false;
-      } catch (error) {
-        console.error("Connection failed:", error);
-        alert("Failed to connect wallet.");
-      }
-    });
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+            observer.observe(section);
+        });
 
-    // Join waitlist (dummy TX)
-    document.getElementById("joinWaitlistBtn").addEventListener("click", async () => {
-      if (!walletAddress) {
-        alert("Connect wallet first!");
-        return;
-      }
-
-      try {
-        const transaction = new solanaWeb3.Transaction().add(
-          solanaWeb3.SystemProgram.transfer({
-            fromPubkey: new PublicKey(walletAddress),
-            toPubkey: PublicKey.unique(), // Placeholder for program-derived account
-            lamports: 0.001 * solanaWeb3.LAMPORTS_PER_SOL,
-          })
-        );
-
-        const signature = await window.solana.signAndSendTransaction(transaction);
-        alert(`✅ Joined waitlist! Tx: ${signature.signature}`);
-      } catch (error) {
-        console.error("Join waitlist failed:", error);
-        alert("❌ Failed to join waitlist.");
-      }
-    });
-  </script>
-
+        // Add a class to make sections visible
+        const styleSheet = document.createElement('style');
+        styleSheet.type = 'text/css';
+        styleSheet.innerText = '.visible { opacity: 1 !important; transform: translateY(0) !important; }';
+        document.head.appendChild(styleSheet);
+    </script>
 </body>
 </html>
